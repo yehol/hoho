@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>우주토끼</title>
+<meta name="description" content="달 너머로 떠나는 작은 탐험가, 우주토끼 공식 랜딩페이지" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070b1c;
+    --bg-2:#0d1430;
+    --surface:rgba(255,255,255,.05);
+    --border:rgba(255,255,255,.12);
+    --text:#eef1ff;
+    --muted:#a7b0d6;
+    --accent:#8f7bff;
+    --accent-2:#5de0e6;
+    --pink:#ff9ecb;
+    --radius:20px;
+    --maxw:1080px;
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f4ff; --bg-2:#ffffff; --surface:rgba(20,20,60,.04);
+    --border:rgba(20,20,60,.12); --text:#181a35; --muted:#5b6087;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"Gowun Dodum",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    line-height:1.7; overflow-x:hidden;
+  }
+  h1,h2,h3,.brand,.btn{font-family:"Jua","Gowun Dodum",sans-serif;font-weight:400;letter-spacing:-.01em}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+
+  /* stars */
+  .sky{position:fixed;inset:0;z-index:-2;background:
+      radial-gradient(1200px 700px at 78% -8%, rgba(143,123,255,.35), transparent 60%),
+      radial-gradient(900px 600px at 10% 10%, rgba(93,224,230,.18), transparent 60%),
+      linear-gradient(180deg,var(--bg),var(--bg-2));}
+  #stars{position:fixed;inset:0;z-index:-1;opacity:.85}
+  :root[data-theme="light"] #stars{opacity:.25}
+
+  header{position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);
+    background:color-mix(in srgb,var(--bg) 70%, transparent);border-bottom:1px solid var(--border)}
+  .nav{display:flex;align-items:center;gap:16px;height:64px}
+  .brand{font-size:20px;display:flex;align-items:center;gap:8px}
+  .nav a{color:var(--muted);text-decoration:none;font-size:15px}
+  .nav a:hover{color:var(--text)}
+  .nav .links{display:flex;gap:18px;margin-left:auto}
+  @media (max-width:680px){.nav .links{display:none}}
+
+  .btn{display:inline-block;padding:12px 24px;border-radius:999px;text-decoration:none;
+    background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;border:0;cursor:pointer;
+    box-shadow:0 10px 30px rgba(143,123,255,.35);transition:transform .15s ease, box-shadow .15s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(143,123,255,.5)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none}
+
+  /* hero */
+  .hero{padding:80px 0 64px;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  @media (max-width:860px){.hero{grid-template-columns:1fr;padding:56px 0 40px;text-align:center}}
+  .tag{display:inline-block;font-size:13px;color:var(--accent-2);border:1px solid var(--border);
+    padding:6px 14px;border-radius:999px;background:var(--surface)}
+  .hero h1{font-size:clamp(36px,6vw,60px);line-height:1.2;margin:18px 0 12px}
+  .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent-2),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);font-size:17px;margin:0 0 28px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  @media (max-width:860px){.cta{justify-content:center}}
+
+  .orbit{position:relative;aspect-ratio:1;max-width:420px;margin:0 auto;width:100%}
+  .orbit .ring{position:absolute;inset:6%;border:1px dashed var(--border);border-radius:50%;animation:spin 26s linear infinite}
+  .orbit .ring.two{inset:20%;animation-duration:16s;animation-direction:reverse}
+  .moon{position:absolute;top:50%;left:50%;width:100%;height:100%;transform:translate(-50%,-50%);
+    display:grid;place-items:center}
+  .bunny{font-size:clamp(90px,18vw,150px);animation:float 5s ease-in-out infinite;filter:drop-shadow(0 12px 30px rgba(143,123,255,.5))}
+  .dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--accent-2);top:-6px;left:50%;
+    transform:translateX(-50%);box-shadow:0 0 18px var(--accent-2)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+  section{padding:64px 0}
+  .head{text-align:center;margin-bottom:36px}
+  .head h2{font-size:clamp(26px,4vw,36px);margin:0 0 8px}
+  .head p{color:var(--muted);margin:0}
+
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}
+  @media (max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;
+    transition:transform .2s ease,border-color .2s ease}
+  .card:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .card .ico{font-size:32px}
+  .card h3{margin:12px 0 6px;font-size:19px}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+
+  .steps{display:grid;gap:18px;grid-template-columns:repeat(3,1fr);counter-reset:s}
+  @media (max-width:860px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative}
+  .step::before{counter-increment:s;content:"0" counter(s);font-family:"Jua",sans-serif;font-size:28px;
+    background:linear-gradient(135deg,var(--accent-2),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .step h3{margin:6px 0}
+  .step p{margin:0;color:var(--muted);font-size:15px}
+
+  .quote{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px}
+  .quote p{margin:0 0 14px}
+  .who{color:var(--muted);font-size:14px}
+
+  .join{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:28px;padding:48px 24px}
+  form{display:flex;gap:10px;justify-content:center;margin:22px auto 0;max-width:460px;flex-wrap:wrap}
+  input[type=email]{flex:1 1 240px;padding:13px 18px;border-radius:999px;border:1px solid var(--border);
+    background:var(--bg-2);color:var(--text);font:inherit;font-size:15px}
+  input[type=email]:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .msg{margin-top:14px;color:var(--accent-2);min-height:22px;font-size:15px}
+
+  footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:14px;
+    display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+  .theme{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:999px;
+    width:38px;height:38px;cursor:pointer;font-size:16px}
+</style>
+</head>
+<body>
+<div class="sky"></div>
+<canvas id="stars"></canvas>
+
+<header>
+  <nav class="wrap nav">
+    <span class="brand">🐰 우주토끼</span>
+    <div class="links">
+      <a href="#about">소개</a>
+      <a href="#features">특징</a>
+      <a href="#how">여정</a>
+      <a href="#voices">이야기</a>
+    </div>
+    <button class="theme" id="theme" aria-label="테마 전환">🌙</button>
+    <a class="btn" href="#join">탑승하기</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap hero" id="about">
+    <div>
+      <span class="tag">✦ 달 너머 첫 번째 정거장</span>
+      <h1>작은 발자국으로<br /><em>가장 먼 우주</em>까지</h1>
+      <p>우주토끼는 매일 조금씩 더 멀리 가는 탐험가를 위한 동행자입니다.<br />
+         떡방아 대신 별을 찧으며, 당신의 호기심을 궤도에 올려드려요.</p>
+      <div class="cta">
+        <a class="btn" href="#join">무료로 탑승하기</a>
+        <a class="btn ghost" href="#features">항해 일지 보기</a>
+      </div>
+    </div>
+    <div class="orbit" aria-hidden="true">
+      <div class="ring"><span class="dot"></span></div>
+      <div class="ring two"><span class="dot" style="background:var(--pink);box-shadow:0 0 18px var(--pink)"></span></div>
+      <div class="moon"><div class="bunny">🐇</div></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="features">
+    <div class="head">
+      <h2>우주토끼가 챙기는 것들</h2>
+      <p>가볍게 뛰어오르고, 멀리 날아가도록</p>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="ico">🌕</div><h3>달빛 나침반</h3>
+        <p>어디로 갈지 헤맬 때, 오늘 한 걸음의 방향을 조용히 알려줍니다.</p></div>
+      <div class="card"><div class="ico">🚀</div><h3>가벼운 추진력</h3>
+        <p>거창한 계획 대신 작은 점프. 매일 3분이면 궤도에 오릅니다.</p></div>
+      <div class="card"><div class="ico">✨</div><h3>별자리 기록</h3>
+        <p>지나온 날들이 점으로 남고, 이어지면 나만의 별자리가 됩니다.</p></div>
+      <div class="card"><div class="ico">🥕</div><h3>당근 연료</h3>
+        <p>작은 보상으로 오래 달립니다. 지치지 않게 속도를 맞춰줘요.</p></div>
+      <div class="card"><div class="ico">🛰️</div><h3>동행 신호</h3>
+        <p>같은 방향을 보는 토끼들과 조용히 신호를 주고받습니다.</p></div>
+      <div class="card"><div class="ico">🌌</div><h3>무중력 휴식</h3>
+        <p>쉬는 것도 항해의 일부. 멈춰도 궤도는 사라지지 않습니다.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="how">
+    <div class="head">
+      <h2>세 번의 점프면 충분해요</h2>
+      <p>탑승부터 첫 별자리까지</p>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>토끼굴 열기</h3><p>이메일 하나로 가입. 복잡한 설정은 우주에 두고 왔습니다.</p></div>
+      <div class="step"><h3>목적지 고르기</h3><p>가고 싶은 별을 하나만 정하세요. 나머지는 나침반이 맡습니다.</p></div>
+      <div class="step"><h3>매일 한 점프</h3><p>하루 한 번의 기록이 쌓여 어느새 달 너머에 도착해 있어요.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="voices">
+    <div class="head">
+      <h2>먼저 떠난 토끼들</h2>
+      <p>궤도에서 보내온 이야기</p>
+    </div>
+    <div class="grid">
+      <div class="quote"><p>“계획표는 늘 실패했는데, 점프 한 번은 이상하게 계속하게 돼요.”</p><div class="who">— 별을 세는 유진</div></div>
+      <div class="quote"><p>“쉬어도 궤도가 남아 있다는 말에 마음이 놓였어요.”</p><div class="who">— 야간비행 도윤</div></div>
+      <div class="quote"><p>“석 달 만에 제 별자리가 생겼습니다. 생각보다 예뻐요.”</p><div class="who">— 관측자 하린</div></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="join">
+    <div class="join">
+      <h2>다음 발사까지 남은 건, 당신뿐</h2>
+      <p style="color:var(--muted);margin:6px 0 0">이메일을 남기면 첫 항해 초대장을 보내드려요.</p>
+      <form id="form" novalidate>
+        <input type="email" id="email" placeholder="rabbit@space.moon" aria-label="이메일 주소" required />
+        <button class="btn" type="submit">초대장 받기</button>
+      </form>
+      <div class="msg" id="msg" role="status"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© <span id="year"></span> 우주토끼 — 달 너머 어딘가에서</span>
+  <span>🐰 오늘도 한 점프</span>
+</footer>
+
+<script>
+  // theme toggle
+  (function(){
+    var btn = document.getElementById('theme'), root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('ut-theme'); } catch(e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    function icon(){ btn.textContent = root.getAttribute('data-theme') === 'light' ? '☀️' : '🌙'; }
+    icon();
+    btn.addEventListener('click', function(){
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ut-theme', next); } catch(e) {}
+      icon(); draw();
+    });
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // signup
+  document.getElementById('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = document.getElementById('email').value.trim(), msg = document.getElementById('msg');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = '🐾 이메일 주소를 다시 확인해 주세요.'; return; }
+    msg.textContent = '🚀 ' + v + ' 으로 초대장을 보냈어요. 곧 만나요!';
+    e.target.reset();
+  });
+
+  // starfield
+  var canvas = document.getElementById('stars'), ctx = canvas.getContext('2d'), stars = [];
+  function draw(){
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    stars = [];
+    var n = Math.min(160, Math.round(innerWidth * innerHeight / 9000));
+    for (var i=0;i<n;i++) stars.push({x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+      r:Math.random()*1.4+.3, a:Math.random()*.6+.2, s:Math.random()*.02+.005});
+  }
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(t){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for (var i=0;i<stars.length;i++){
+      var st = stars[i];
+      var a = reduce ? st.a : st.a + Math.sin(t*st.s)*0.25;
+      ctx.globalAlpha = Math.max(0.05, Math.min(1, a));
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, 6.283); ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  draw(); requestAnimationFrame(tick);
+  addEventListener('resize', draw);
+</script>
+</body>
+</html>
