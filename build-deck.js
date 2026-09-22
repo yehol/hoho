@@ -17,6 +17,10 @@ const IMG = {
   key: { file: A("keyvisual.png"), ar: 1586 / 992 },
   lineup: { file: A("lineup.png"), ar: 2000 / 713 },
   turn: { file: A("turnaround_angora.png"), ar: 1774 / 887 },
+  // 경험 확장 이미지 시안 (exp-display.png 는 예비)
+  expPackage: { file: A("exp-package.png"), ar: 1672 / 941 },
+  expStore: { file: A("exp-store.png"), ar: 1672 / 941 },
+  expPopup: { file: A("exp-popup.png"), ar: 1672 / 941 },
 };
 
 // 로고 락업. 파일에 여백이 포함돼 있어 글자 기준선을 맞추려면 그만큼 보정한다.
@@ -399,34 +403,30 @@ const CHARS = [
   ];
   groups.forEach((g, i) => {
     const x = M + i * 2.95;
-    rule(s, x, 1.72, 2.78, C.ruleStrong);
+    rule(s, x, 2.35, 2.78, C.ruleStrong);
     s.addText(g.h, {
-      x, y: 1.9, w: 2.78, h: 0.26,
+      x, y: 2.53, w: 2.78, h: 0.26,
       fontFace: F, fontSize: 10, color: C.ink,
     });
     s.addText(lines(g.items), {
-      x, y: 2.24, w: 2.78, h: 1.1,
+      x, y: 2.87, w: 2.78, h: 1.1,
       fontFace: F, fontSize: 8.5, color: C.inkSoft, lineSpacing: 16,
     });
   });
 
-  // 이미지 미확보 구간 — 플레이스홀더
-  ["아트토이 · 오브제", "패키지 · 질문 카드", "팝업 · 공간"].forEach((t, i) => {
-    const x = M + i * 3.93;
-    s.addShape(pptx.ShapeType.rect, {
-      x, y: 3.85, w: 3.65, h: 2.6,
-      fill: { color: C.bgAlt }, line: { color: C.rule, width: 0.75 },
-    });
-    s.addText(t, {
-      x, y: 4.94, w: 3.65, h: 0.26,
-      fontFace: F, fontSize: 9, color: C.inkSoft, align: "center",
-    });
-    s.addText("이미지 준비 중", {
-      x, y: 5.2, w: 3.65, h: 0.24,
-      fontFace: F, fontSize: 7.5, color: C.muted, align: "center", charSpacing: 1.2,
-    });
+  rule(s, M, 4.30, CW, C.rule);
+  s.addText("실제 제품이 아니라, 경험의 방향을 보여주는 이미지 시안입니다.", {
+    x: M, y: 4.50, w: CW, h: 0.28,
+    fontFace: F, fontSize: 9, color: C.inkSoft,
   });
-  footer(s, 9);
+
+  // 좌우·하단으로 빠져나가는 3분할 밴드
+  const gap = 0.06;
+  const iw = (W - gap * 2) / 3;
+  const ih = iw / IMG.expPackage.ar;
+  [IMG.expPackage, IMG.expStore, IMG.expPopup].forEach((d, i) => {
+    imgW(s, d, i * (iw + gap), H - ih, iw);
+  });
 }
 
 /* ================= 10 마무리 — 좌측 블리드 ================= */

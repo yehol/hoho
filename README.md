@@ -6,7 +6,7 @@
 
 - `Wuzu_Tokki_IP_소개서_20260922.pptx` — 확정본. 16:9 / 10페이지 / 편집 가능
 - `build-deck.js` — 확정본 소스 (PptxGenJS)
-- `assets/` — 원본 이미지와 로고 락업
+- `assets/` — 원본 이미지, 경험 확장 시안, 로고 락업
 - `logo/` — 로고 벡터 (SVG)
 
 무채색 배경에 캐릭터 렌더의 색만 남기고, 제목을 작게 두고 여백을 넓게 쓴다.
@@ -24,6 +24,9 @@ npm install
 node build-deck.js        # 확정본
 node build-deck-warm.js   # 웜 아이보리 대안본
 ```
+
+9페이지의 경험 확장 이미지는 실제 제품이 아니라 시안이며, 슬라이드에도 그렇게
+표기해 두었다. `exp-display.png` 는 쓰지 않은 예비 컷이다.
 
 ## 로고
 
