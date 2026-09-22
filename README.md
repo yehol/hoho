@@ -4,21 +4,24 @@
 
 ## 결과물
 
-내용은 같고 디자인 언어만 다른 두 버전이 있다. 둘 다 16:9 / 10페이지 / 편집 가능.
+- `Wuzu_Tokki_IP_소개서_20260922.pptx` — 확정본. 16:9 / 10페이지 / 편집 가능
+- `build-deck.js` — 확정본 소스 (PptxGenJS)
+- `assets/` — 원본 이미지
 
-| 버전 | 파일 | 소스 | 감도 |
-|---|---|---|---|
-| 기본 | `Wuzu_Tokki_IP_소개서_20260922.pptx` | `build-deck.js` | 따뜻한 아이보리 + 브론즈 포인트 |
-| 29CM | `Wuzu_Tokki_IP_소개서_29CM_20260922.pptx` | `build-deck-29cm.js` | 무채색, 작은 제목, 비대칭·블리드 |
+무채색 배경에 캐릭터 렌더의 색만 남기고, 제목을 작게 두고 여백을 넓게 쓴다.
+이미지는 화면 가장자리로 빼서 비대칭으로 앉힌다.
 
-`assets/` 는 두 버전이 함께 참조하는 원본 이미지.
+### 대안본
+
+`build-deck-warm.js` 는 같은 내용을 따뜻한 아이보리 + 브론즈 포인트로 짠 버전이다.
+pptx 는 따로 두지 않았고, 필요하면 아래 명령으로 만든다.
 
 ## 재생성
 
 ```bash
 npm install
-node build-deck.js
-node build-deck-29cm.js
+node build-deck.js        # 확정본
+node build-deck-warm.js   # 웜 아이보리 대안본
 ```
 
 ## 이미지 취급 원칙
