@@ -4,15 +4,21 @@
 
 ## 결과물
 
-- `Wuzu_Tokki_IP_소개서_20260922.pptx` — 16:9 / 10페이지 / 편집 가능
-- `build-deck.js` — 편집용 소스 (PptxGenJS)
-- `assets/` — 덱이 참조하는 원본 이미지
+내용은 같고 디자인 언어만 다른 두 버전이 있다. 둘 다 16:9 / 10페이지 / 편집 가능.
+
+| 버전 | 파일 | 소스 | 감도 |
+|---|---|---|---|
+| 기본 | `Wuzu_Tokki_IP_소개서_20260922.pptx` | `build-deck.js` | 따뜻한 아이보리 + 브론즈 포인트 |
+| 29CM | `Wuzu_Tokki_IP_소개서_29CM_20260922.pptx` | `build-deck-29cm.js` | 무채색, 작은 제목, 비대칭·블리드 |
+
+`assets/` 는 두 버전이 함께 참조하는 원본 이미지.
 
 ## 재생성
 
 ```bash
 npm install
 node build-deck.js
+node build-deck-29cm.js
 ```
 
 ## 이미지 취급 원칙
