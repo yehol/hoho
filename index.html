@@ -4,7 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&display=swap">
 <style>
 /* Layout: storybook HUD over a living village picture; the scene is the game board, a side "notice board" panel holds requests, family tree and journal. Single warm daylight look by choice. */
 :root{
@@ -243,85 +243,103 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 .sheet-head h2{font-size:22px}
 .sheet-head .x{border:0;background:var(--meadow);width:34px;height:34px;border-radius:50%;font-size:16px}
 .bag{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-/* ---- phone: full-screen village, status overlays ---- */
+/* ---- phone: landscape stage, whole village in view, status column on the right ---- */
 @media (max-width:760px),(max-height:500px){
+  :root{--W:100vw;--H:100vh;--W:100dvw;--H:100dvh}
   html,body{height:100%;overflow:hidden}
   body{padding:0;background:#eef3e8}
-  .wrap{position:fixed;inset:0;display:block;max-width:none}
-  .main,.col{display:block}
-  .stage{position:absolute;inset:0;overflow:auto;scrollbar-width:none;overscroll-behavior:none}
-  .stage::-webkit-scrollbar{display:none}
-  .scene{width:max(100vw,150vh);width:max(100vw,150dvh);max-width:none;border:0;border-radius:0;box-shadow:none}
+  .wrap{position:fixed;inset:0;max-width:none;gap:8px;
+    --side:clamp(150px,calc(var(--W) - (var(--H) - 16px) * 1.5 - 24px),300px);
+    grid-template-columns:minmax(0,1fr) var(--side);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"scene hud" "scene dock";
+    padding:max(8px,env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) max(8px,env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .main,.col{display:contents}
+  .stage{grid-area:scene;display:grid;place-items:center;min-width:0;min-height:0}
+  .scene{width:min(100%,calc((var(--H) - 16px) * 1.5));border-width:3px;border-radius:16px}
   .inv{display:none}
-  .hud{position:absolute;top:0;left:0;right:0;z-index:50;pointer-events:none;gap:6px;
-    padding:max(8px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) 18px max(10px,env(safe-area-inset-left,0px));
-    background:linear-gradient(#fffaf5f0 0,#fffaf5c0 60%,#fffaf500)}
-  .hud>*{pointer-events:auto}
-  .brand{width:100%;margin:0}
-  .brand h1{font-size:22px}
+  .hud{grid-area:hud;flex-direction:column;align-items:stretch;gap:6px;min-width:0}
+  .brand{margin:0}
+  .brand h1{font-size:19px}
   .brand small{display:none}
-  .stat{padding:3px 10px 3px 8px;font-size:13px;gap:6px}
+  .stat{padding:3px 10px 3px 8px;font-size:13px;gap:6px;justify-content:space-between}
   .stat b{font-size:11px}
-  .harm{width:54px}
+  .harm{flex:1;width:auto;min-width:30px}
   .pip{width:9px;height:9px}
-  #endDay{padding:5px 12px;font-size:14px;margin-left:auto}
-  .dock{display:flex;position:absolute;z-index:70;gap:2px;padding:6px;border-radius:24px;background:#fffdf7f0;box-shadow:0 6px 22px #4a332633;
-    left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px))}
-  .dock button{flex:1;border:0;background:transparent;border-radius:18px;padding:5px 0 4px;font-family:var(--display);font-size:12px;display:grid;justify-items:center;line-height:1.2;color:var(--ink-soft)}
-  .dock button .i{font-size:21px}
-  .dock button[aria-pressed="true"]{background:var(--meadow);color:var(--ink)}
-  .panel{position:absolute;left:0;right:0;bottom:0;z-index:60;max-height:72%;display:flex;flex-direction:column;border:0;border-radius:26px 26px 0 0;
-    box-shadow:0 -10px 30px #4a332633;transform:translateY(105%);transition:transform .32s cubic-bezier(.3,1.3,.5,1);padding-bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 70px)}
+  #endDay{padding:6px 12px;font-size:14px}
+  .dock{grid-area:dock;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:end;gap:4px}
+  .dock button{border:0;background:#fffdf7;border-radius:14px;padding:5px 0 4px;font-family:var(--display);font-size:12px;display:grid;justify-items:center;line-height:1.2;color:var(--ink-soft);box-shadow:0 2px 0 var(--line)}
+  .dock button .i{font-size:18px}
+  .dock button[aria-pressed="true"]{background:var(--berry);color:#fff;box-shadow:0 2px 0 var(--berry-deep)}
+  .panel{position:absolute;z-index:60;left:8px;top:8px;bottom:8px;right:calc(var(--side) + 16px);display:flex;flex-direction:column;border-radius:20px;
+    box-shadow:0 10px 30px #4a332640;transform:translateY(calc(100% + 20px));transition:transform .32s cubic-bezier(.3,1.2,.5,1)}
   body.sheet .panel{transform:none}
   .panel .tabs{display:none}
-  .sheet-head{display:flex}
-  .tabbody{max-height:none;flex:1;min-height:0;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
-  .scene-bar{position:fixed;left:max(10px,env(safe-area-inset-left,0px));bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 72px)}
-  .banner{position:fixed;top:calc(max(8px,env(safe-area-inset-top,0px)) + 84px);font-size:14px}
-  .evchip{position:fixed;top:calc(max(8px,env(safe-area-inset-top,0px)) + 84px);right:max(10px,env(safe-area-inset-right,0px))}
-  .toast{bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 80px)}
-  .sayb{font-size:13px}
+  .sheet-head{display:flex;padding:10px 14px 2px}
+  .sheet-head h2{font-size:19px}
+  .tabbody{max-height:none;flex:1;min-height:0;padding:10px 14px}
+  .bag{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .sayb{font-size:12px;padding:4px 9px}
+  .banner{font-size:13px;padding:4px 6px 4px 12px}
+  .banner .btn{padding:3px 10px;font-size:12px}
+  .evchip{font-size:12px;padding:4px 10px}
+  .chip{font-size:11px;padding:3px 9px}
+  .scene-bar{left:6px;bottom:6px}
 }
-@media (max-height:500px){
-  .dock{left:auto;width:min(400px,58vw);padding:3px;border-radius:18px}
-  .dock button{font-size:11px;padding:2px 0}
-  .dock button .i{font-size:16px}
-  .panel{max-height:88%;left:auto;width:min(460px,70vw);padding-bottom:calc(max(8px,env(safe-area-inset-bottom,0px)) + 56px)}
-  .scene-bar{bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 8px)}
-  .toast{bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 56px)}
-  .banner,.evchip{top:calc(max(8px,env(safe-area-inset-top,0px)) + 74px)}
+/* portrait phone: turn the whole page sideways so the village is always landscape */
+@media (orientation:portrait) and (max-width:760px){
+  :root{--W:100vh;--H:100vw;--W:100dvh;--H:100dvw}
+  body{position:fixed;top:0;left:0;width:100vh;width:100dvh;height:100vw;height:100dvw;transform-origin:0 0;transform:rotate(90deg) translateY(-100%)}
+  .wrap,.modal,.intro{position:absolute}
 }
 /* ---- opening ---- */
-.intro{position:fixed;inset:0;z-index:200;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#3b2f7a,#15132e 70%);color:#fff;transition:opacity .8s,background 1.2s}
-.intro canvas{position:absolute;inset:0;width:100%;height:100%;transition:opacity 1s}
-.intro .line{position:absolute;left:0;right:0;top:20%;margin:0;padding:0 24px;text-align:center;font-family:var(--display);font-size:clamp(20px,4.4vw,34px);opacity:0;transition:opacity 1s,transform 1.2s;transform:translateY(8px);text-shadow:0 2px 12px #0008}
-.intro .l2{top:auto;bottom:16%}
-.planet{position:absolute;left:50%;top:56%;width:min(46vw,46vh);aspect-ratio:1;transform:translate(-50%,-50%) scale(.04);opacity:0;transition:transform 2.2s cubic-bezier(.4,0,.2,1),opacity 1s}
-.planet i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0 6%,#ffe0ef 18%,#f7b6d2 42%,#b9a6f0 70%,#7f8fe0 100%);box-shadow:0 0 60px #ffc6e3aa,0 0 140px #b9a6f066}
-.planet i::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(-18deg,transparent 0 16%,#ffffff2e 16% 22%)}
-.planet b{position:absolute;left:-6%;right:-6%;top:58%;height:18%;border-radius:50%;background:radial-gradient(ellipse,#fff 0 40%,#ffffff00 70%);opacity:.75;filter:blur(2px)}
-.meteor{position:absolute;right:-10%;top:-10%;width:180px;height:4px;border-radius:4px;background:linear-gradient(90deg,#fff0,#fff 85%,#fffbe0);box-shadow:0 0 12px #fff;transform:rotate(-35deg);opacity:0}
-.intro.s1 .l1{opacity:1;transform:none}
-.intro.s2 .planet{opacity:1;transform:translate(-50%,-50%) scale(.45)}
-.intro.s2 .meteor{animation:meteor 1.6s cubic-bezier(.5,0,.8,.6) forwards}
-@keyframes meteor{0%{opacity:0;transform:translate(0,0) rotate(-35deg)}15%{opacity:1}100%{opacity:0;transform:translate(-48vw,62vh) rotate(-35deg) scaleX(.3)}}
+.intro{position:fixed;inset:0;z-index:200;overflow:hidden;color:#f4ecff;background:linear-gradient(180deg,#0e0d24 0%,#221d4b 55%,#4e3f7c 100%);transition:opacity .9s}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%;transition:opacity 1.2s}
+.intro .halo{position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 50% 115%,#ffb7d555,#ffb7d500 70%);opacity:0;transition:opacity 2.4s}
+.intro .line{position:absolute;left:0;right:0;top:22%;margin:0;padding:0 24px;text-align:center;font-family:"Gowun Batang",serif;font-size:clamp(14px,2.6vmin,21px);letter-spacing:.22em;transition:opacity 1s}
+.intro .l2{top:auto;bottom:18%}
+.intro .line span{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(5px)}
+.intro.s1 .l1 span,.intro.s3 .l2 span{animation:bin 1.1s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * 55ms)}
+@keyframes bin{to{opacity:1;filter:none;transform:none}}
+.intro.s3 .l1,.intro.s4 .line{opacity:0}
+.planet{position:absolute;left:50%;top:52%;width:34vmin;aspect-ratio:1;transform:translate(-50%,-50%) scale(.5);opacity:0;transition:transform 3.2s cubic-bezier(.3,0,.2,1),opacity 1.6s}
+.planet i{position:absolute;inset:0;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 32% 28%,#fffaff 0 4%,#ffe3f0 16%,#f5b9d6 40%,#b4a3ee 72%,#7c86d8 100%);
+  box-shadow:inset -3vmin -4vmin 7vmin #5a4aa055,0 0 6vmin #ffc6e370,0 0 16vmin #b9a6f040}
+.planet i::before{content:"";position:absolute;inset:-20%;background:repeating-linear-gradient(-16deg,#fff0 0 9%,#ffffff26 9% 13%,#fff0 13% 21%);animation:bands 26s linear infinite}
+@keyframes bands{to{transform:translateX(18%)}}
+.planet em{position:absolute;left:-38%;right:-38%;top:50%;height:0;padding-bottom:30%;transform:translateY(-50%) rotate(-14deg);border-radius:50%;border:1px solid #ffffff59;box-shadow:0 0 12px #ffd6ec33}
+.meteor{position:absolute;left:78%;top:8%;width:26vmin;height:1.5px;transform-origin:100% 50%;transform:rotate(-32deg);opacity:0;
+  background:linear-gradient(90deg,#fff0,#fff6 60%,#fff);border-radius:2px}
+.meteor::after{content:"";position:absolute;right:-3px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px #fff8,0 0 24px 8px #ffd6ec66}
+.intro.s2 .meteor{animation:meteor 2.2s cubic-bezier(.45,0,.7,.6) forwards}
+@keyframes meteor{0%{opacity:0;transform:translate(0,0) rotate(-32deg)}12%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(-30vw,40vh) rotate(-32deg) scaleX(.2)}}
+.intro.s2 .planet{opacity:1;transform:translate(-50%,-50%) scale(.62)}
+.intro.s2 .halo,.intro.s3 .halo{opacity:1}
 .intro.s3 .planet{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.intro.s3 .l1{opacity:0}
-.intro.s3 .l2{opacity:1;transform:none}
-.intro.s4{background:#fdeef3}
-.intro.s4 canvas,.intro.s4 .line,.intro.s4 .meteor{opacity:0}
-.intro.s4 .planet{transform:translate(-50%,-50%) scale(9);opacity:0;transition:transform 1.4s ease-in,opacity 1.2s .2s}
-.tcard{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;padding:24px;text-align:center;color:var(--ink);opacity:0;pointer-events:none;transition:opacity 1s .6s;
-  background:linear-gradient(#fff7fbcc,#fff7fbee),url(assets/village-empty.jpg) center/cover}
+.intro .bloom{position:absolute;inset:0;background:radial-gradient(circle at 50% 52%,#fff 0,#ffeef6 50%,#f1f0fb 100%);opacity:0;transition:opacity .9s .45s}
+.intro.s4 .bloom{opacity:1}
+.intro.s4 canvas,.intro.s4 .halo,.intro.s4 .meteor{opacity:0}
+.intro.s4 .planet{transform:translate(-50%,-50%) scale(7);opacity:0;transition:transform 1.6s cubic-bezier(.6,0,.8,.4),opacity 1.1s .3s}
+.tcard{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:1.6vmin;padding:24px;text-align:center;color:var(--ink);opacity:0;pointer-events:none;transition:opacity 1s 1.1s;
+  background:radial-gradient(ellipse 90% 70% at 50% 0%,#ffffff 0,#fdf2f7 45%,#eef0fb 100%)}
+.tcard .tbg{position:absolute;inset:0;background:url(assets/village-empty.jpg) center 70%/cover;opacity:.2;filter:saturate(.6) blur(1px);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 85%,#000,#0000 75%);mask-image:radial-gradient(ellipse 80% 60% at 50% 85%,#000,#0000 75%)}
+.tcard>*{position:relative}
 .intro.s4 .tcard{opacity:1;pointer-events:auto}
-.tcard h1{font-size:clamp(40px,9vw,76px);line-height:1;color:var(--ink)}
+.tcard .eyebrow{margin:0;font-family:"Gowun Batang",serif;font-size:clamp(10px,1.7vmin,13px);letter-spacing:.42em;color:#b27e96}
+.tcard h1{font-size:clamp(34px,9vmin,72px);line-height:1.05;color:var(--ink);letter-spacing:.02em}
 .tcard h1 span{color:var(--berry)}
-.iok{margin:0;font-family:var(--display);font-size:clamp(18px,3.6vw,26px);color:var(--berry-deep);min-height:1.4em;transition:opacity .4s}
-.ibuns{display:flex;justify-content:center;flex-wrap:wrap;gap:0;max-width:min(720px,94vw)}
-.ibuns img{width:min(78px,10vw);opacity:0;transform:translateY(20px) scale(.6)}
-.intro.s4 .ibuns img{animation:ipop .6s cubic-bezier(.3,1.6,.5,1) forwards,float 3.6s ease-in-out infinite}
-@keyframes ipop{to{opacity:1;transform:none}}
-.skip{position:absolute;right:max(14px,env(safe-area-inset-right,0px));top:max(14px,env(safe-area-inset-top,0px));border:0;border-radius:999px;padding:6px 14px;background:#ffffff26;color:#fff;font-family:var(--display);font-size:14px}
+.tcard .rule{width:44px;height:1px;background:#dcbccb}
+.iok{margin:0;font-family:"Gowun Batang",serif;font-size:clamp(14px,2.6vmin,19px);letter-spacing:.08em;color:#8b6475;min-height:1.5em;transition:opacity .45s}
+.ibuns{display:flex;justify-content:center;align-items:flex-end;margin-bottom:.6vmin}
+.ibuns img{width:min(70px,9.4vmin);margin:0 -.3vmin;opacity:0;transform:translateY(var(--y)) scale(.7)}
+.intro.s4 .ibuns img{animation:ipop .8s cubic-bezier(.3,1.5,.5,1) forwards,ifl 4s ease-in-out infinite}
+@keyframes ipop{to{opacity:1;transform:translateY(var(--y))}}
+@keyframes ifl{0%,100%{translate:0 0}50%{translate:0 -6%}}
+.enter{margin-top:1.4vmin;border:1px solid #e3c0cf;background:#ffffffcc;color:var(--ink);border-radius:999px;padding:12px 38px;font-family:"Gowun Batang",serif;font-size:15px;letter-spacing:.32em;text-indent:.32em;
+  box-shadow:0 8px 24px #e8a9bf33;transition:background .3s,color .3s,box-shadow .3s;animation:breathe 3s ease-in-out infinite}
+.enter:hover,.enter:focus-visible{background:var(--berry);color:#fff;border-color:var(--berry)}
+@keyframes breathe{50%{box-shadow:0 8px 34px #f2708c40}}
+.skip{position:absolute;right:max(14px,env(safe-area-inset-right,0px));top:max(14px,env(safe-area-inset-top,0px));border:1px solid #ffffff33;border-radius:999px;padding:5px 14px;background:transparent;color:#e9defa;font-family:"Gowun Batang",serif;font-size:12px;letter-spacing:.2em}
 .intro.s4 .skip{display:none}
 .intro.out{opacity:0;pointer-events:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -368,15 +386,20 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 </div>
 <div class="intro" id="intro" hidden>
   <canvas id="space"></canvas>
-  <div class="planet" id="planet"><i></i><b></b></div>
-  <div class="meteor" id="meteor"></div>
-  <p class="line l1">인간의 망원경도 닿지 않는 우주 저편에</p>
-  <p class="line l2">작고 말랑한 별이 하나 있어요</p>
+  <div class="halo"></div>
+  <div class="planet"><i></i><em></em></div>
+  <div class="meteor"></div>
+  <div class="bloom"></div>
+  <p class="line l1" data-t="인간의 망원경도 닿지 않는 우주 저편에"></p>
+  <p class="line l2" data-t="작고 말랑한 별 하나가 떠 있어요"></p>
   <div class="tcard">
+    <div class="tbg"></div>
+    <p class="eyebrow">MALLANG PLANET</p>
     <div class="ibuns" id="ibuns"></div>
-    <h1>말랑별 <span>토끼마을</span></h1>
-    <p class="iok" id="iok">흔들려도 괜찮아</p>
-    <button class="btn big pink" id="enter">말랑별에 들어가기</button>
+    <h1><span>말랑별</span> 토끼마을</h1>
+    <div class="rule"></div>
+    <p class="iok" id="iok"></p>
+    <button class="enter" id="enter">들어가기</button>
   </div>
   <button class="skip" id="skip">건너뛰기</button>
 </div>
@@ -565,7 +588,7 @@ function renderTab(){
    <div class="bridge"><b>크림토끼</b>는 삼남매의 사촌이자 솜사탕의 언니. 두 가족을 잇는 케이크 친척이에요.</div>
    <div class="fgroup"><h3>폭신 자매</h3><p>같은 설탕 구름에서 왔대요</p><div class="fmembers">${m('cream')}<span class="link">자매</span>${m('cotton')}</div></div>
    <div class="fgroup"><h3>하늘 남매</h3><p>낮 하늘은 구름, 밤 하늘은 오로라</p><div class="fmembers">${m('aurora')}<span class="link">남매</span>${m('cloud')}<span class="link maybe">아마도 친척?</span>${m('bubble')}</div></div>
-   <div class="fgroup" style="background:#ece8f4"><h3>???</h3><p>${S.chapters.includes('memory')?'이 별이 식기 전부터 있었다. 모두의 따뜻함과 관련이 있는 것 같다.':'아무도 그의 가족을 모른다.'}</p><div class="fmembers">${m('rock')}</div></div>
+   <div class="fgroup" style="background:#ece8f4"><h3>말 없는 이웃</h3><p>${S.chapters.includes('memory')?'이 별이 식기 전부터 있었대요. 모두의 따뜻함과 관련이 있는 것 같아요.':'가족은 아무도 몰라요. 그래도 혼자는 아니에요.'}</p><div class="fmembers">${m('rock')}<span class="link">자주 놀러 오는 친구</span>${m('bread')}${m('cloud')}${m('cotton')}</div></div>
   </div>`;
   tb.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>openBunny(b.dataset.b));
  } else {
@@ -917,15 +940,15 @@ async function playEvent(id){
 }
 
 /* ---------- ambient life ---------- */
-const FAM={choco:['pudding','bread','cream'],pudding:['choco','bread','cream'],bread:['choco','pudding','cream','cloud'],cream:['cotton','pudding','choco'],cotton:['cream','cloud'],bubble:['aurora','cotton'],cloud:['aurora','bread','bubble'],aurora:['cloud','bubble'],rock:['bread']};
-const VTALK={'pudding>choco':['형! 텃밭 구경 왔어','물 잘 주고 있지~'],'cream>cotton':['솜사탕아, 그네 조심해!','언니다! 밀어 줘!'],'bubble>aurora':['오늘도 빛 비교하러 왔어!','또 왔니? 들어와.'],
+const FAM={choco:['pudding','bread','cream','rock'],pudding:['choco','bread','cream','rock'],bread:['choco','pudding','cream','cloud','rock','rock'],cream:['cotton','pudding','choco'],cotton:['cream','cloud','rock'],bubble:['aurora','cotton','rock'],cloud:['aurora','bread','bubble','rock'],aurora:['cloud','bubble','rock'],rock:['bread','cloud','aurora','cotton','pudding']};
+const VTALK={'bread>rock':['빵 두 개 가져왔어요!','…고마워.'],'cloud>rock':['여기 강물은 늘 따뜻하다~','…(고개를 끄덕인다)'],'aurora>rock':['금 사이 빛, 오늘도 예쁘다','…너도.'],'cotton>rock':['암석아! 옆에 앉아도 돼?','…응. 앉아.'],'pudding>rock':['흔들흔들~ 같이 흔들자!','…(아주 조금 흔들린다)'],'choco>rock':['초콜릿 한 조각 줄까?','…달다. 좋아.'],'bubble>rock':['퐁! 방울 하나 선물!','…예쁘네.'],'rock>cloud':['…물고기.','암석이다! 같이 낚시하자!'],'rock>aurora':['…별, 보러 왔어.','어서 와. 같이 보자.'],'rock>cotton':['…그네.','밀어 줄래? 와아!'],'rock>pudding':['…간식.','암석이 왔다! 같이 먹자!'],'pudding>choco':['형! 텃밭 구경 왔어','물 잘 주고 있지~'],'cream>cotton':['솜사탕아, 그네 조심해!','언니다! 밀어 줘!'],'bubble>aurora':['오늘도 빛 비교하러 왔어!','또 왔니? 들어와.'],
  'cloud>aurora':['누나, 오늘 밤 맑게 해 둘게','고마워, 구름아.'],'bread>cream':['크림 누나, 생크림 좀 빌려줘!','케이크 또 만들 거지?'],'cotton>cloud':['구름아, 오늘은 비 안 오지?','응… 아마도!'],
  'choco>bread':['빵아, 갓 구운 거 있어?','형 몫은 늘 있지!'],'rock>bread':['…두 개.','네, 두 개요!'],'aurora>bubble':['방울아, 오늘 밤 같이 별 볼래?','좋아! 퐁퐁!'],'cream>pudding':['푸딩아, 간식 시간이지?','누나 최고!'],
  'pudding>cream':['누나, 케이크 남은 거 있어?','너 줄 건 늘 있지~'],'bubble>cotton':['솜사탕아, 방울 타고 놀자!','와아, 둥실둥실!'],'cloud>bread':['물고기 가져왔어!','바게트랑 바꾸자!']};
 const STROLL=['산책 좋다~','흥얼흥얼♪','오늘 바람 좋네','어디 보자…','반짝이 어디 있지?'];
 async function ambient(){
  if(EV.on||document.hidden||walkers>=2||placing||Math.random()<.3)return;
- const free=ORDER.filter(k=>!P[k].busy&&(k!=='rock'||Math.random()<.25));if(!free.length)return;
+ const free=ORDER.filter(k=>!P[k].busy&&(k!=='rock'||Math.random()<.7));if(!free.length)return;
  const k=pick(free),p=P[k],tok=++p.tok;p.busy=true;walkers++;
  try{
   const r=Math.random();
@@ -982,7 +1005,10 @@ function renderDecos(){const sc=$('#scene');sc.querySelectorAll('.deco').forEach
    const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);checkFav(d);save()};
    el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)};
   sc.appendChild(el)})}
-function scenePt(e){const r=$('#scene').getBoundingClientRect();return [Math.max(30,Math.min(1506,(e.clientX-r.left)/r.width*1536)),Math.max(150,Math.min(1010,(e.clientY-r.top)/r.height*1024))]}
+const rotated=()=>matchMedia('(orientation:portrait) and (max-width:760px)').matches;
+function scenePt(e){const r=$('#scene').getBoundingClientRect();
+ const fx=rotated()?(e.clientY-r.top)/r.height:(e.clientX-r.left)/r.width,fy=rotated()?(r.right-e.clientX)/r.width:(e.clientY-r.top)/r.height;
+ return [Math.max(30,Math.min(1506,fx*1536)),Math.max(150,Math.min(1010,fy*1024))]}
 function makeDeco(t){const d=DECOS[t];if(!Object.entries(d.cost).every(([k,n])=>S.inv[k]>=n))return;
  Object.entries(d.cost).forEach(([k,n])=>S.inv[k]-=n);S.owned[t]=(S.owned[t]||0)+1;addHarmony(2);addLog(`장식 「${d.n}」을(를) 만들었다.`);save();render();startPlacing(t)}
 function startPlacing(t){if(EV.on)return;stopPlacing();placing=t;document.body.classList.remove('sheet');const sc=$('#scene');sc.classList.add('placing');
@@ -1017,19 +1043,21 @@ function initFluff(){
 function playIntro(after){
  const it=$('#intro'),cv=$('#space'),cx=cv.getContext('2d');it.hidden=false;it.className='intro';
  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
- $('#ibuns').innerHTML=ORDER.map((k,i)=>`<img src="${img(k)}" alt="" style="animation-delay:${.8+i*.12}s,${(i*.4)%3.6}s">`).join('');
- const fit=()=>{cv.width=innerWidth;cv.height=innerHeight};fit();
- const st=Array.from({length:140},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,p:Math.random()*6.3}));
- let run=true;const draw=t=>{if(!run)return;cx.clearRect(0,0,cv.width,cv.height);
-  for(const s of st){cx.globalAlpha=.35+.65*Math.abs(Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x*cv.width,s.y*cv.height,s.r,0,7);cx.fill()}
+ it.querySelectorAll('.line').forEach(l=>{l.innerHTML=[...l.dataset.t].map((c,i)=>`<span style="--i:${i}">${c===' '?'&nbsp;':c}</span>`).join('')});
+ const arc=[18,9,3,0,-2,0,3,9,18];
+ $('#ibuns').innerHTML=ORDER.map((k,i)=>`<img src="${img(k)}" alt="" style="--y:${arc[i]}%;animation-delay:${1.1+i*.09}s,${(i*.45)%4}s">`).join('');
+ const fit=()=>{const d=Math.min(2,devicePixelRatio||1);cv.width=cv.clientWidth*d;cv.height=cv.clientHeight*d;cx.setTransform(d,0,0,d,0,0)};fit();
+ const st=Array.from({length:170},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.1+.25,p:Math.random()*6.3,v:.2+Math.random()*.8}));
+ let run=true,t0=performance.now();const draw=t=>{if(!run)return;const W=cv.clientWidth,H=cv.clientHeight,e=Math.min(1,(t-t0)/1800);cx.clearRect(0,0,W,H);
+  for(const s of st){cx.globalAlpha=e*(.25+.75*Math.abs(Math.sin(t/1100*s.v+s.p)));cx.fillStyle=s.r>1?'#ffe9f6':'#fff';cx.beginPath();cx.arc(s.x*W,((s.y+t/90000*s.v)%1)*H,s.r,0,7);cx.fill()}
   cx.globalAlpha=1;requestAnimationFrame(draw)};requestAnimationFrame(draw);
- const okIdx={i:0};const ok=setInterval(()=>{const e=$('#iok');e.style.opacity=0;setTimeout(()=>{okIdx.i=(okIdx.i+1)%ORDER.length;e.textContent=OKAY[ORDER[okIdx.i]];e.style.opacity=1},400)},1700);
- $('#iok').textContent=OKAY[ORDER[0]];
+ let oi=0;$('#iok').textContent=`“${OKAY[ORDER[0]]}”`;
+ const ok=setInterval(()=>{const e=$('#iok');e.style.opacity=0;setTimeout(()=>{oi=(oi+1)%ORDER.length;e.textContent=`“${OKAY[ORDER[oi]]}”`;e.style.opacity=1},450)},2000);
  const T=[];const at=(ms,c)=>T.push(setTimeout(()=>it.className='intro '+c,ms));
  const toCard=()=>{T.forEach(clearTimeout);it.className='intro s4'};
- if(still)toCard();else{at(80,'s1');at(2600,'s2');at(4700,'s3');at(7400,'s4')}
+ if(still)toCard();else{at(120,'s1');at(3300,'s2');at(5800,'s3');at(8800,'s4')}
  $('#skip').onclick=toCard;
- $('#enter').onclick=()=>{it.classList.add('out');clearInterval(ok);setTimeout(()=>{run=false;it.hidden=true;it.className='intro'},800);if(isPhone())centerStage();after&&after()};
+ $('#enter').onclick=()=>{it.classList.add('out');clearInterval(ok);setTimeout(()=>{run=false;it.hidden=true;it.className='intro'},900);after&&after()};
 }
 /* ---------- boot ---------- */
 function start(data){
