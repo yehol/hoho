@@ -181,6 +181,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 .portrait.hop{animation:hop .5s}
 @keyframes hop{40%{transform:translateY(-18px) scaleY(1.06)}70%{transform:scaleY(.9) scaleX(1.08)}}
 .shead h2{font-size:26px;line-height:1.1}
+.shead .okay{font-family:var(--display);color:var(--berry-deep);font-size:15px;line-height:1.3}
 .shead .rel{font-size:13px;color:var(--ink-soft)}
 .shead .x{margin-left:auto;align-self:flex-start;border:0;background:var(--meadow);width:36px;height:36px;border-radius:50%;font-size:18px;flex:none}
 .say{background:var(--meadow);border-radius:16px;padding:12px 16px;font-size:16px;position:relative;min-height:56px}
@@ -295,6 +296,7 @@ const B={
  cloud:{name:'구름토끼',item:'은빛 물고기',icon:'🐟',x:48.5,y:82,home:'강가 나루터',who:'낮 하늘 담당. 기분이 좋으면 하늘이 맑아진다.',game:'react',gname:'강가 낚시'},
  rock:{name:'암석토끼',item:'반짝돌',icon:'💎',x:78.8,y:84,home:'용암 금 바위집',who:'???',game:'still',gname:'곁에 가만히 있기'},
 };
+const OKAY={choco:'조금 녹아도 괜찮아',pudding:'흔들려도 괜찮아',bread:'천천히 부풀어도 괜찮아',cream:'모양이 흐트러져도 괜찮아',cotton:'작아져도 괜찮아',bubble:'터져도 괜찮아',cloud:'흘러가도 괜찮아',aurora:'어두워도 괜찮아',rock:'딱딱해도 괜찮아'};
 const ORDER=['choco','pudding','bread','cream','cotton','bubble','aurora','cloud','rock'];
 const REL={
  choco:'디저트 삼남매 · 첫째',pudding:'디저트 삼남매 · 둘째',bread:'디저트 삼남매 · 막내',
@@ -317,7 +319,7 @@ const LINES={
  cotton:[["우와아, 그네 밀어 줄래? 더 높이! 더 높이!","크림 언니랑 나는 같은 설탕 구름에서 왔대."],
   ["벚꽃나무 집 꼭대기에 올라가면 마을이 다 보여.","비 오는 날은 싫어… 솜털이 쪼그라들거든. 구름이한테는 비밀이야!"],
   ["너도 이제 그네 친구야!","높이 올라가면 가끔 암석토끼 집 금이 반짝이는 게 보여."]],
- bubble:[["퐁! 놀랐지? 나는 비눗방울토끼야.","내 무지갯빛은 어디서 왔을까? 오로라랑 닮았다는 말을 자주 들어."],
+ bubble:[["퐁! 놀랐지? 나는 비눗방울토끼야. 터져도 괜찮아, 금방 또 생기거든.","내 무지갯빛은 어디서 왔을까? 오로라랑 닮았다는 말을 자주 들어."],
   ["오로라는 아마… 내 친척일 거야. 아마도! 확실하진 않아.","방울 속에 소원을 넣으면 하늘까지 날아간대."],
   ["오로라 집 망원경으로 보면 내 방울도 별처럼 보여.","친척이든 아니든, 같이 반짝이면 그걸로 됐지 뭐!"]],
  cloud:[["쉿… 물고기가 놀라. 여기 앉아.","오로라는 우리 누나야. 낮 하늘은 내가, 밤 하늘은 누나가 맡아."],
@@ -477,7 +479,7 @@ function closeModal(){if(G){G();G=null}$('#modal').hidden=true;render()}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal'&&!inChoice)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden&&!inChoice)closeModal()});
 function sheet(html){$('#sheet').innerHTML=html;$('#modal').hidden=false;const x=$('#sheet .x');if(x)x.onclick=closeModal}
-const head=(k,sub)=>`<div class="shead"><img class="portrait" id="por" src="${img(k)}" alt=""><div><h2>${B[k].name}</h2><div class="rel">${sub||REL[k]}</div><div class="hearts">${hearts(k)}</div></div><button class="x" aria-label="닫기">✕</button></div>`;
+const head=(k,sub)=>`<div class="shead"><img class="portrait" id="por" src="${img(k)}" alt=""><div><h2>${B[k].name}</h2><div class="okay">“${OKAY[k]}”</div><div class="rel">${sub||REL[k]}</div><div class="hearts">${hearts(k)}</div></div><button class="x" aria-label="닫기">✕</button></div>`;
 
 function openBunny(k){
  if(EV.on){toast('마을 이야기가 진행 중이에요.');return}
@@ -578,7 +580,7 @@ const GAMES={
   return ()=>{clearInterval(iv);tos.forEach(clearTimeout)};
  },
  pop(el,done){
-  el.innerHTML=`<p class="mg-tip">떠오르는 비눗방울을 톡톡 터뜨려요. 12초!</p><div class="arena" id="ar"></div><div class="mg-row"><span id="pt">12초</span><span id="ps">퐁 0</span></div>`;
+  el.innerHTML=`<p class="mg-tip">떠오르는 비눗방울을 톡톡 터뜨려요. 터져도 괜찮아, 또 생기니까! 12초!</p><div class="arena" id="ar"></div><div class="mg-row"><span id="pt">12초</span><span id="ps">퐁 0</span></div>`;
   const ar=$('#ar');let sc=0,end=performance.now()+12000,raf;const bs=[];
   const spawn=setInterval(()=>{const b=document.createElement('button');b.className='bub';b.setAttribute('aria-label','방울');const s=40+Math.random()*30;b.style.width=b.style.height=s+'px';
    const o={el:b,x:Math.random()*(ar.clientWidth-s),y:ar.clientHeight,v:50+Math.random()*60,w:Math.random()*6};b.style.left=o.x+'px';ar.appendChild(b);bs.push(o);
@@ -695,7 +697,7 @@ const STORIES={
   const c=await choice('cotton','비에 젖어 쪼그라든 솜사탕토끼. 어떻게 도와줄까?',['구름토끼에게 비를 그쳐 달라고 부탁한다','크림토끼와 함께 솜털을 말려 준다']);
   if(c===0){await walk('cloud',spot('cotton',1));await say('cloud','앗, 미안! 신나서 그만…');fx('raining',false);bond('cloud',1);bond('cotton',1)}
   else{await say('cream','후~ 후~ 따뜻한 바람!');fx('raining',false);bond('cream',1);bond('cotton',1);gain('cotton',1)}
-  mood('cotton','shrink',false);await say('cotton','폭신폭신 돌아왔다! 고마워!');
+  mood('cotton','shrink',false);await say('cotton','폭신폭신 돌아왔다! 작아져도 괜찮았어.');
   addHarmony(3);await Promise.all([home('cream'),home('cloud')])}},
  cake:{t:'케이크 친척의 방문',again:1,cond:()=>S.day>=2,run:async()=>{
   await say('cream','오늘은 삼남매네 가는 날! 케이크 들고 출발~');
@@ -737,7 +739,7 @@ const STORIES={
   const c=await choice('choco','녹아내리는 초코토끼를 어떻게 식혀 줄까?',['구름토끼를 불러 그늘을 만든다','강가에 데려가 발을 담근다']);
   if(c===0){await walk('cloud',spot('choco',1));await say('cloud','구름 모자 씌워 줄게!');mood('choco','melt',false);bond('cloud',1);bond('choco',1)}
   else{await walk('choco',spot('cloud',0));mood('choco','melt',false);await say('choco','아~ 시원하다. 물고기들이 간지러워!');gain('cloud',1);bond('choco',1)}
-  await say('choco','고마워. 역시 동생들이랑 반짝이 덕분이야.');
+  await say('choco','고마워. 조금 녹아도 괜찮아, 다시 굳으면 되니까.');
   addHarmony(3);await Promise.all(['choco','pudding','bread','cloud'].map(home))}},
  bread2:{t:'빵 두 개의 행방',cond:()=>S.bond.rock>=2&&S.day>=3,run:async()=>{
   await say('rock','……');
@@ -746,12 +748,12 @@ const STORIES={
   await walk('rock',[560,968]);
   await say('rock','(강가 바위 위에 빵 하나를 조용히 내려놓는다)',2600);
   const c=await choice('rock','암석토끼가 강가에 빵 하나를 두고 갔어요. 어떻게 할까?',['살그머니 따라가 본다','모른 척해 준다']);
-  if(c===0){await say('rock','…여기. 내가 처음 떨어진 곳이야.',3000);await say('rock','별이… 아직 뜨거웠을 때.',2600);bond('rock',2)}
+  if(c===0){await say('rock','…여기. 내가 처음 떨어진 곳이야.',3000);await say('rock','별이… 아직 뜨거웠을 때.',2600);await say('rock','…딱딱해도 괜찮아. 그래서 오래 지켰어.',3000);bond('rock',2)}
   else{await say('rock','…고마워, 반짝이.');bond('rock',1)}
   addHarmony(3);await home('rock')}},
  night:{t:'오로라가 제일 진한 밤',cond:()=>S.chapters.includes('cracks'),run:async()=>{
   fx('night');await wait(900);
-  await say('aurora','다들 나와 봐! 오늘 오로라가 제일 진해!');
+  await say('aurora','다들 나와 봐! 어두워야 내가 제일 잘 보여.');
   const g=['cloud','bubble','cotton','cream','pudding','choco','bread'];
   await Promise.all(g.map((k,i)=>wait(i*250).then(()=>walk(k,spot('aurora',i)))));
   await say('cotton','우와아… 하늘이 춤춘다!');
@@ -804,7 +806,7 @@ async function ambient(){
    await wait(700);
   }else if(r<.68&&S.deco.length){const d=pick(S.deco);await walk(k,[Math.min(1490,d.x+70),Math.min(1005,d.y+15)],tok);if(tok!==p.tok)return;
    await say(k,DECOS[d.t].fav===k?'이거 내가 제일 좋아하는 거야!':pick(['우와, 예쁘다!','누가 놓았을까?','반짝이 솜씨인가?']));
-  }else{const nb=pick(ADJ['h_'+k]);await walk(k,NODES[nb],tok);if(tok!==p.tok)return;await say(k,k==='rock'?'…':pick(STROLL))}
+  }else{const nb=pick(ADJ['h_'+k]);await walk(k,NODES[nb],tok);if(tok!==p.tok)return;await say(k,Math.random()<.4?OKAY[k]:k==='rock'?'…':pick(STROLL))}
   if(tok!==p.tok)return;await walk(k,HOME[k],tok);
  }finally{walkers--;if(tok===p.tok)p.busy=false}
 }
