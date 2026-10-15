@@ -56,13 +56,20 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 /* main grid */
 .main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;align-items:start}
 @media (max-width:980px){.main{grid-template-columns:minmax(0,1fr)}}
-.scene{position:relative;aspect-ratio:3/2;max-width:100%;border-radius:22px;overflow:hidden;border:4px solid var(--paper);box-shadow:0 10px 30px #4a332633;background:#bcd8a8 url(assets/village-empty.jpg) center/cover no-repeat;touch-action:manipulation;isolation:isolate}
+.scene{position:relative;aspect-ratio:3/2;max-width:100%;border-radius:22px;overflow:hidden;border:4px solid var(--paper);box-shadow:0 10px 30px #4a332633;background:#eef3e8;touch-action:manipulation;isolation:isolate}
+.scene .bg{position:absolute;inset:0;background:url(assets/village-empty.jpg) center/cover no-repeat;filter:saturate(.76) contrast(.9) brightness(1.04)}
+.scene .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 75% at 50% 58%,transparent 55%,#fff7f285 100%),linear-gradient(#ffffff5c,#ffffff00 34%),#ffe4ee1f}
+.scene .fluff{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .scene .tint{position:absolute;inset:0;pointer-events:none;background:var(--night);opacity:0;transition:opacity 1.2s;mix-blend-mode:multiply;z-index:1500}
 /* living bunnies */
 .bun{position:absolute;transform:translate(-50%,-94%);border:0;background:transparent;padding:0;aspect-ratio:1/1;display:grid;align-items:end}
-.bun img{width:100%;display:block;transform-origin:50% 92%;animation:idle 2.8s ease-in-out infinite;transition:transform .5s,filter .5s;pointer-events:none}
-.bun.walking img{animation:hopwalk .46s ease-in-out infinite}
-@keyframes hopwalk{0%,100%{transform:translateY(0) scale(1.03,.97)}50%{transform:translateY(-14%) scale(.97,1.04)}}
+.bun img{position:relative;width:100%;display:block;transform-origin:50% 92%;animation:float 3.8s ease-in-out infinite;animation-delay:var(--d,0s);transition:transform .5s,filter .5s;pointer-events:none;filter:drop-shadow(0 0 1.5px #fffd) drop-shadow(0 6px 8px #6a4a3a26)}
+.bun::before{content:"";position:absolute;left:20%;right:20%;bottom:3%;height:9%;border-radius:50%;background:radial-gradient(closest-side,#5a3d2c38,#5a3d2c00);animation:shade 3.8s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6%)}}
+@keyframes shade{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.8);opacity:.55}}
+.bun.walking img{animation:hopwalk .62s ease-in-out infinite}
+.bun.walking::before{animation:shade .62s ease-in-out infinite}
+@keyframes hopwalk{0%,100%{transform:translateY(0) scale(1.03,.97)}50%{transform:translateY(-16%) scale(.98,1.03)}}
 .bun.shrink img{animation:none;transform:scale(.68,.6)}
 .bun.melt img{animation:none;transform:scale(1.1,.82)}
 .bun.glowy img{filter:drop-shadow(0 0 10px #ffc861) drop-shadow(0 0 22px #ffb84d)}
@@ -70,7 +77,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
 .bun .tag{position:absolute;left:50%;top:100%;transform:translate(-50%,-30%);white-space:nowrap;background:var(--paper);color:var(--ink);font-family:var(--display);font-size:clamp(10px,1.1vw,14px);padding:1px 9px;border-radius:999px;box-shadow:0 2px 0 #0002;opacity:0;transition:opacity .2s;pointer-events:none}
 .bun:hover .tag,.bun:focus-visible .tag,.scene.labels .bun .tag{opacity:1}
 .bun .ask{position:absolute;left:66%;top:8%;width:clamp(18px,2.1vw,28px);aspect-ratio:1;border-radius:50%;background:var(--berry);color:#fff;font-family:var(--display);display:grid;place-items:center;font-size:clamp(11px,1.3vw,17px);box-shadow:0 2px 0 var(--berry-deep);animation:bob 1.4s ease-in-out infinite}
-.sayb{position:absolute;left:50%;bottom:96%;transform:translateX(-50%);width:max-content;max-width:min(230px,40vw);background:#fffdf7;color:var(--ink);font-family:var(--body);font-size:clamp(11px,1.15vw,14px);line-height:1.35;padding:6px 11px;border-radius:14px;box-shadow:0 3px 0 #0002;pointer-events:none;animation:pop .2s;z-index:2}
+.sayb{position:absolute;left:50%;bottom:96%;transform:translateX(-50%);width:max-content;max-width:min(230px,40vw);background:#fffdf7f2;border-radius:18px!important;color:var(--ink);font-family:var(--body);font-size:clamp(11px,1.15vw,14px);line-height:1.35;padding:6px 11px;border-radius:14px;box-shadow:0 3px 0 #0002;pointer-events:none;animation:pop .2s;z-index:2}
 .sayb::after{content:"";position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:#fffdf7}
 /* decorations */
 .deco{position:absolute;transform:translate(-50%,-96%);pointer-events:none}
@@ -242,6 +249,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;l
   <div class="main">
     <div style="display:grid;gap:12px;min-width:0">
       <div class="scene" id="scene">
+        <div class="bg"></div><canvas class="fluff" id="fluff"></canvas>
         <div class="glow"></div>
         <div class="tint"></div>
         <div class="rain"></div>
@@ -641,8 +649,8 @@ const sizeAt=y=>6.2+y/1024*8;
 function setPos(k,x,y){const p=P[k];p.x=x;p.y=y;const el=p.el;el.style.left=x/15.36+'%';el.style.top=y/10.24+'%';el.style.width=sizeAt(y)+'%';el.style.zIndex=Math.round(y)}
 function initScene(){
  const sc=$('#scene');sc.querySelectorAll('.bun').forEach(e=>e.remove());
- ORDER.forEach((k,i)=>{const el=document.createElement('button');el.className='bun';el.setAttribute('aria-label',B[k].name+'에게 말 걸기');
-  el.innerHTML=`<img src="${img(k)}" alt="" style="animation-delay:-${(i*.37)%2.8}s"><span class="tag">${B[k].name}</span>`;
+ ORDER.forEach((k,i)=>{const el=document.createElement('button');el.className='bun';el.style.setProperty('--d',`-${(i*.53)%3.8}s`);el.setAttribute('aria-label',B[k].name+'에게 말 걸기');
+  el.innerHTML=`<img src="${img(k)}" alt=""><span class="tag">${B[k].name}</span>`;
   el.onclick=()=>{if(placing||decoMode)return;openBunny(k)};sc.appendChild(el);
   P[k]={el,x:0,y:0,busy:false,tok:0};setPos(k,...HOME[k])});
  if(!initScene.once){initScene.once=1;sc.addEventListener('click',sceneClick);setInterval(ambient,4200)}
@@ -857,10 +865,26 @@ function checkFav(d){const f=DECOS[d.t].fav;
   if(!P[f].busy&&!EV.on)say(f,pick(['우와! 내가 제일 좋아하는 거야!','우리 집 앞에? 고마워, 반짝이!','매일 보고 싶었어!']));save();render()}
  else if(!d.bonus){d.bonus=true;addHarmony(1);save();render()}}
 
+/* ---------- floating fluff ---------- */
+function initFluff(){
+ const cv=$('#fluff'),cx=cv.getContext('2d'),cols=['#ffd6e6','#d7ecff','#fff3c4','#e8dcff','#ffffff'];
+ const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let W=0,H=0;const fit=()=>{const d=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)};fit();addEventListener('resize',fit);
+ const ps=Array.from({length:22},()=>({x:Math.random(),y:Math.random(),r:2+Math.random()*5,v:.006+Math.random()*.012,ph:Math.random()*6.3,c:pick(cols),ring:Math.random()<.35}));
+ let last=performance.now();
+ const draw=t=>{const dt=Math.min(.05,(t-last)/1000);last=t;cx.clearRect(0,0,W,H);
+  for(const p of ps){if(!still){p.y-=p.v*dt;if(p.y<-.05){p.y=1.05;p.x=Math.random()}}
+   const x=(p.x+Math.sin(t/2600+p.ph)*.012)*W,y=p.y*H,r=p.r*W/900;
+   if(p.ring){cx.strokeStyle='#ffffffb0';cx.lineWidth=1;cx.beginPath();cx.arc(x,y,r*1.6,0,7);cx.stroke();cx.fillStyle='#ffffff90';cx.beginPath();cx.arc(x-r*.5,y-r*.5,r*.35,0,7);cx.fill()}
+   else{const g=cx.createRadialGradient(x,y,0,x,y,r*2);g.addColorStop(0,p.c+'ee');g.addColorStop(1,p.c+'00');cx.fillStyle=g;cx.beginPath();cx.arc(x,y,r*2,0,7);cx.fill()}}
+  if(!still&&!document.hidden)requestAnimationFrame(draw)};
+ requestAnimationFrame(draw);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!still){last=performance.now();requestAnimationFrame(draw)}});
+}
 /* ---------- boot ---------- */
 function start(data){
  if(data&&data.S&&data.S.inv)S=Object.assign(fresh(),data.S);
  initScene();
+ if(!initFluff.once){initFluff.once=1;initFluff()}
  render();
  if(!S.seenIntro){S.seenIntro=true;save();showChapter('intro')}
 }
