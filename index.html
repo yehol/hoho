@@ -296,7 +296,7 @@ const B={
  cloud:{name:'구름토끼',item:'은빛 물고기',icon:'🐟',x:48.5,y:82,home:'강가 나루터',who:'낮 하늘 담당. 기분이 좋으면 하늘이 맑아진다.',game:'react',gname:'강가 낚시'},
  rock:{name:'암석토끼',item:'반짝돌',icon:'💎',x:78.8,y:84,home:'용암 금 바위집',who:'???',game:'still',gname:'곁에 가만히 있기'},
 };
-const OKAY={choco:'조금 녹아도 괜찮아',pudding:'흔들려도 괜찮아',bread:'천천히 부풀어도 괜찮아',cream:'모양이 흐트러져도 괜찮아',cotton:'작아져도 괜찮아',bubble:'터져도 괜찮아',cloud:'흘러가도 괜찮아',aurora:'어두워도 괜찮아',rock:'딱딱해도 괜찮아'};
+const OKAY={choco:'달콤해도 괜찮아',pudding:'흔들려도 괜찮아',bread:'폭신해도 괜찮아',cream:'모양이 흐트러져도 괜찮아',cotton:'녹아도 괜찮아',bubble:'터져도 괜찮아',cloud:'흘러가도 괜찮아',aurora:'어두워도 괜찮아',rock:'딱딱해도 괜찮아'};
 const ORDER=['choco','pudding','bread','cream','cotton','bubble','aurora','cloud','rock'];
 const REL={
  choco:'디저트 삼남매 · 첫째',pudding:'디저트 삼남매 · 둘째',bread:'디저트 삼남매 · 막내',
@@ -317,7 +317,7 @@ const LINES={
   ["초코네 삼남매랑은 사촌이야. 케이크엔 빵도 초코도 크림도 다 들어가잖아.","솜사탕이가 그네에서 떨어질까 봐 늘 조마조마해."],
   ["가족이 두 쪽이라 좋은 점? 파티가 두 배야!","언젠가 마을 모두가 한 테이블에 앉는 날이 오면 좋겠어."]],
  cotton:[["우와아, 그네 밀어 줄래? 더 높이! 더 높이!","크림 언니랑 나는 같은 설탕 구름에서 왔대."],
-  ["벚꽃나무 집 꼭대기에 올라가면 마을이 다 보여.","비 오는 날은 싫어… 솜털이 쪼그라들거든. 구름이한테는 비밀이야!"],
+  ["벚꽃나무 집 꼭대기에 올라가면 마을이 다 보여.","비 오는 날은 싫어… 솜털이 녹아내리거든. 구름이한테는 비밀이야!"],
   ["너도 이제 그네 친구야!","높이 올라가면 가끔 암석토끼 집 금이 반짝이는 게 보여."]],
  bubble:[["퐁! 놀랐지? 나는 비눗방울토끼야. 터져도 괜찮아, 금방 또 생기거든.","내 무지갯빛은 어디서 왔을까? 오로라랑 닮았다는 말을 자주 들어."],
   ["오로라는 아마… 내 친척일 거야. 아마도! 확실하진 않아.","방울 속에 소원을 넣으면 하늘까지 날아간대."],
@@ -691,13 +691,13 @@ const STORIES={
  rain:{t:'비 오는 날',again:1,cond:()=>S.day>=2,run:async()=>{
   await say('cloud','오늘 기분 최고! 비 좀 내려 볼까?');
   fx('raining');await wait(900);
-  mood('cotton','shrink');await say('cotton','으앙… 솜털이 쪼그라들었어!');
+  mood('cotton','shrink');await say('cotton','으앙… 솜털이 녹아내려!');
   await walk('cream',spot('cotton',0));
   await say('cream','솜사탕아! 언니 왔어. 괜찮아?');
-  const c=await choice('cotton','비에 젖어 쪼그라든 솜사탕토끼. 어떻게 도와줄까?',['구름토끼에게 비를 그쳐 달라고 부탁한다','크림토끼와 함께 솜털을 말려 준다']);
+  const c=await choice('cotton','비에 젖어 녹아내린 솜사탕토끼. 어떻게 도와줄까?',['구름토끼에게 비를 그쳐 달라고 부탁한다','크림토끼와 함께 솜털을 말려 준다']);
   if(c===0){await walk('cloud',spot('cotton',1));await say('cloud','앗, 미안! 신나서 그만…');fx('raining',false);bond('cloud',1);bond('cotton',1)}
   else{await say('cream','후~ 후~ 따뜻한 바람!');fx('raining',false);bond('cream',1);bond('cotton',1);gain('cotton',1)}
-  mood('cotton','shrink',false);await say('cotton','폭신폭신 돌아왔다! 작아져도 괜찮았어.');
+  mood('cotton','shrink',false);await say('cotton','다시 몽글몽글해졌다! 녹아도 괜찮아, 또 피어나니까.');
   addHarmony(3);await Promise.all([home('cream'),home('cloud')])}},
  cake:{t:'케이크 친척의 방문',again:1,cond:()=>S.day>=2,run:async()=>{
   await say('cream','오늘은 삼남매네 가는 날! 케이크 들고 출발~');
@@ -739,7 +739,7 @@ const STORIES={
   const c=await choice('choco','녹아내리는 초코토끼를 어떻게 식혀 줄까?',['구름토끼를 불러 그늘을 만든다','강가에 데려가 발을 담근다']);
   if(c===0){await walk('cloud',spot('choco',1));await say('cloud','구름 모자 씌워 줄게!');mood('choco','melt',false);bond('cloud',1);bond('choco',1)}
   else{await walk('choco',spot('cloud',0));mood('choco','melt',false);await say('choco','아~ 시원하다. 물고기들이 간지러워!');gain('cloud',1);bond('choco',1)}
-  await say('choco','고마워. 조금 녹아도 괜찮아, 다시 굳으면 되니까.');
+  await say('choco','고마워. 다들 너무 달콤하다… 달콤해도 괜찮지?');
   addHarmony(3);await Promise.all(['choco','pudding','bread','cloud'].map(home))}},
  bread2:{t:'빵 두 개의 행방',cond:()=>S.bond.rock>=2&&S.day>=3,run:async()=>{
   await say('rock','……');
