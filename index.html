@@ -732,15 +732,18 @@ const STORIES={
   else{await say('bubble','그래도 괜찮아. 같이 반짝이면 됐지!');bond('bubble',1);bond('aurora',1)}
   await say('aurora','친척이든 아니든, 언제든 놀러 와.');
   addHarmony(3);await Promise.all([home('bubble'),home('cloud')])}},
- choco:{t:'초코가 녹는 날',cond:()=>S.harmony>=15,run:async()=>{
-  mood('choco','melt');await say('choco','아이 더워… 귀가 녹는 것 같아…');
-  await Promise.all([walk('pudding',spot('choco',2)),walk('bread',spot('choco',3))]);
-  await say('pudding','형 녹는다!!');await say('bread','물! 물 가져와!');
-  const c=await choice('choco','녹아내리는 초코토끼를 어떻게 식혀 줄까?',['구름토끼를 불러 그늘을 만든다','강가에 데려가 발을 담근다']);
-  if(c===0){await walk('cloud',spot('choco',1));await say('cloud','구름 모자 씌워 줄게!');mood('choco','melt',false);bond('cloud',1);bond('choco',1)}
-  else{await walk('choco',spot('cloud',0));mood('choco','melt',false);await say('choco','아~ 시원하다. 물고기들이 간지러워!');gain('cloud',1);bond('choco',1)}
-  await say('choco','고마워. 다들 너무 달콤하다… 달콤해도 괜찮지?');
-  addHarmony(3);await Promise.all(['choco','pudding','bread','cloud'].map(home))}},
+ choco:{t:'초코의 달콤한 나눔',cond:()=>S.harmony>=15,run:async()=>{
+  await say('choco','초콜릿을 너무 많이 만들었어… 다들 너무 달다고 하면 어쩌지?');
+  await walk('choco',spot('bread',0));
+  await say('bread','형 초콜릿이다! 바게트에 발라 먹어야지.');
+  await walk('choco',spot('rock',0));
+  await say('choco','저기… 너무 달아서 싫어?');await say('rock','……');await say('rock','(한 조각을 조용히 받아 든다)',2200);
+  const c=await choice('choco','초코토끼가 남은 초콜릿을 보며 망설여요. 뭐라고 해 줄까?',['"달콤해도 괜찮아. 다 같이 나눠 먹자!"','"내가 같이 나눠 주러 다닐게"']);
+  if(c===0){await Promise.all([walk('pudding',spot('rock',1)),wait(300).then(()=>walk('cotton',spot('rock',3))),wait(600).then(()=>walk('cloud',spot('rock',2)))]);
+   await say('pudding','나도! 나도!');await say('cotton','달콤한 건 언제나 좋아!');bond('choco',1);addHarmony(2)}
+  else{await walk('choco',spot('cream',0));await say('cream','어머, 케이크 위에 올리면 딱이겠다!');gain('choco',1);bond('choco',1);bond('cream',1)}
+  await say('choco','달콤해도 괜찮구나. 고마워, 반짝이.');
+  addHarmony(3);await Promise.all(['choco','pudding','cotton','cloud'].map(home))}},
  bread2:{t:'빵 두 개의 행방',cond:()=>S.bond.rock>=2&&S.day>=3,run:async()=>{
   await say('rock','……');
   await walk('rock',spot('bread',1));
