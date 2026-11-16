@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material Bunnies 사이트 컨셉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEE4; --paper-2:#EAE3D5; --ink:#2A2724; --ink-2:#6B645B; --line:#CFC6B6;
+    --mona:#E9DFD0; --shushu:#F6C6D8; --pola:#B9D9E6; --berti:#D49A5C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Noto Sans KR",sans-serif;
+    background-image:linear-gradient(var(--paper-2) 1px,transparent 1px),linear-gradient(90deg,var(--paper-2) 1px,transparent 1px);
+    background-size:28px 28px;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 56px}
+  .mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  .serif{font-family:"Gowun Batang",serif}
+
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-bottom:1.5px solid var(--ink)}
+  .logo{display:flex;align-items:baseline;gap:10px}
+  .logo b{font-family:"Gowun Batang",serif;font-size:24px;letter-spacing:-.01em}
+  .logo span{font-size:11px;color:var(--ink-2)}
+  nav ul{display:flex;gap:34px;list-style:none;font-size:14px}
+  nav ul li.on{border-bottom:1.5px solid var(--ink)}
+  .cart{font-size:12px;border:1.5px solid var(--ink);padding:7px 14px;border-radius:999px}
+
+  /* hero */
+  .hero{padding:64px 0 40px;position:relative}
+  .kicker{font-size:12px;color:var(--ink-2);display:flex;gap:18px;align-items:center}
+  .kicker i{flex:0 0 60px;height:1px;background:var(--ink-2)}
+  h1{font-family:"Gowun Batang",serif;font-weight:700;font-size:62px;line-height:1.22;letter-spacing:-.02em;margin:22px 0 18px}
+  .hero p.lead{font-size:17px;color:var(--ink-2);line-height:1.7;max-width:520px}
+  .lineup{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:46px;position:relative}
+  .lineup::before{content:"";position:absolute;left:0;right:0;top:288px;height:1.5px;background:var(--ink)}
+  .spec{display:flex;flex-direction:column;align-items:center}
+  .spec svg{width:230px;height:300px;overflow:visible}
+  .tag{margin-top:22px;background:#FBF8F2;border:1.2px solid var(--ink);padding:12px 16px 12px 30px;position:relative;width:200px;font-size:11px;line-height:1.7;transform:rotate(var(--r,0deg))}
+  .tag::before{content:"";position:absolute;left:10px;top:50%;width:8px;height:8px;border-radius:50%;border:1.2px solid var(--ink);transform:translateY(-50%)}
+  .tag b{font-family:"Gowun Batang",serif;font-size:17px;letter-spacing:0;display:block}
+  .measure{position:absolute;right:-6px;top:30px;height:258px;width:20px;border-right:1px dashed var(--ink-2)}
+  .measure span{position:absolute;right:8px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:right center;font-size:10px;color:var(--ink-2);white-space:nowrap}
+
+  /* rules */
+  section{padding:84px 0;border-top:1.5px solid var(--ink)}
+  .sec-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:40px}
+  .sec-head h2{font-family:"Gowun Batang",serif;font-size:38px;letter-spacing:-.02em}
+  .sec-head .mono{font-size:12px;color:var(--ink-2)}
+  .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1.5px solid var(--ink);background:#FBF8F2}
+  .rule{padding:34px 32px;border-right:1.5px solid var(--ink)}
+  .rule:last-child{border-right:0}
+  .rule .n{font-size:12px;color:var(--ink-2)}
+  .rule h3{font-family:"Gowun Batang",serif;font-size:24px;margin:14px 0 10px;line-height:1.4}
+  .rule p{font-size:14px;color:var(--ink-2);line-height:1.7}
+
+  /* cards */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{background:#FBF8F2;border:1.5px solid var(--ink);padding:22px;display:flex;flex-direction:column}
+  .card .swatch{height:170px;border:1.2px solid var(--ink);margin-bottom:18px;overflow:hidden}
+  .card .swatch svg{width:100%;height:100%;display:block}
+  .card .top{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-2)}
+  .card h3{font-family:"Gowun Batang",serif;font-size:28px;margin:8px 0 4px}
+  .card .quote{font-size:14px;line-height:1.6;min-height:46px}
+  .meters{margin:18px 0 18px;border-top:1px dashed var(--line);padding-top:14px}
+  .meter{display:grid;grid-template-columns:86px 1fr;align-items:center;font-size:12px;margin:7px 0;color:var(--ink-2)}
+  .dots{display:flex;gap:4px}
+  .dots i{width:16px;height:7px;border:1px solid var(--ink);border-radius:2px}
+  .dots i.f{background:var(--ink)}
+  .card .more{margin-top:auto;font-size:13px;display:flex;justify-content:space-between;border-top:1px solid var(--ink);padding-top:12px}
+
+  /* forecast */
+  .forecast{display:grid;grid-template-columns:300px 1fr;border:1.5px solid var(--ink);background:#FBF8F2}
+  .fc-left{padding:30px;border-right:1.5px solid var(--ink);background:var(--ink);color:var(--paper)}
+  .fc-left .mono{font-size:11px;opacity:.7}
+  .fc-left .big{font-family:"Gowun Batang",serif;font-size:34px;margin:14px 0 6px}
+  .fc-left .meta{font-size:13px;opacity:.85;line-height:1.8}
+  .fc-left .note{margin-top:22px;font-size:12px;opacity:.6;line-height:1.6}
+  .fc-rows{display:grid;grid-template-columns:repeat(2,1fr)}
+  .fc{padding:22px 26px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:center}
+  .fc:nth-child(2n){border-right:0}.fc:nth-child(n+3){border-bottom:0}
+  .fc svg{width:54px;height:70px}
+  .fc b{font-family:"Gowun Batang",serif;font-size:18px}
+  .fc .st{display:inline-block;font-size:11px;border:1px solid var(--ink);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px}
+  .fc p{font-size:13px;color:var(--ink-2);margin-top:5px;line-height:1.55}
+
+  /* shop */
+  .shop{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}
+  .tray{background:#DCCDB5;border:1.5px solid var(--ink);padding:26px;display:grid;grid-template-columns:repeat(2,1fr);gap:18px;box-shadow:10px 10px 0 var(--ink)}
+  .slot{background:#C9B79A;border:1.2px solid var(--ink);padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .slot svg{width:150px;height:150px;border:1.2px solid var(--ink);box-shadow:3px 4px 0 rgba(0,0,0,.18)}
+  .slot span{font-size:10px}
+  .shop-txt .mono{font-size:12px;color:var(--ink-2)}
+  .shop-txt h2{font-family:"Gowun Batang",serif;font-size:42px;line-height:1.3;margin:14px 0 16px;letter-spacing:-.02em}
+  .shop-txt p{font-size:15px;color:var(--ink-2);line-height:1.75}
+  .spec-table{margin:26px 0;border-top:1.5px solid var(--ink)}
+  .spec-table div{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .spec-table div span:first-child{color:var(--ink-2)}
+  .btns{display:flex;gap:12px}
+  .btn{padding:15px 24px;border:1.5px solid var(--ink);font-size:14px;border-radius:999px}
+  .btn.p{background:var(--ink);color:var(--paper)}
+
+  /* making */
+  .making{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .ph{height:240px;border:1.5px solid var(--ink);background:repeating-linear-gradient(135deg,#E6DDCD 0 10px,#EFE8DB 10px 20px);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-2)}
+  .ph-cap{margin-top:12px;font-size:14px}
+  .ph-cap .mono{font-size:11px;color:var(--ink-2);margin-right:8px}
+
+  footer{border-top:1.5px solid var(--ink);padding:36px 0 50px;display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2)}
+  footer b{color:var(--ink);font-family:"Gowun Batang",serif;font-size:16px}
+
+  /* annotation layer (concept notes, not part of design) */
+  .anno{position:absolute;background:#FF5A36;color:#fff;font-size:12px;line-height:1.45;padding:8px 11px;border-radius:6px;max-width:230px;font-family:"Noto Sans KR";z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .anno::before{content:attr(data-n);display:inline-block;background:#fff;color:#FF5A36;font-weight:700;border-radius:50%;width:18px;height:18px;text-align:center;line-height:18px;margin-right:6px;font-size:11px}
+  .rel{position:relative}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- 같은 실루엣: 귀 2 + 몸 -->
+    <ellipse id="earL" cx="74" cy="64" rx="17" ry="54" transform="rotate(-9 74 64)"/>
+    <ellipse id="earR" cx="126" cy="64" rx="17" ry="54" transform="rotate(9 126 64)"/>
+    <path id="body" d="M100 98 C152 98 176 142 176 188 C176 234 146 256 100 256 C54 256 24 234 24 188 C24 142 48 98 100 98 Z"/>
+    <clipPath id="bclip"><use href="#earL"/><use href="#earR"/><use href="#body"/></clipPath>
+    <mask id="nobody" maskUnits="userSpaceOnUse" x="-20" y="-20" width="240" height="300">
+      <rect x="-20" y="-20" width="240" height="300" fill="#fff"/><use href="#body" fill="#000"/>
+    </mask>
+    <filter id="blur8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="blur4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="wave"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="38"/></filter>
+    <linearGradient id="gMona" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3EBDF"/><stop offset="1" stop-color="#DCCDB8"/></linearGradient>
+    <linearGradient id="gBerti" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9773A"/><stop offset=".55" stop-color="#D49A5C"/><stop offset="1" stop-color="#E2B377"/></linearGradient>
+    <radialGradient id="gCrumb" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F6E6C6"/><stop offset=".8" stop-color="#EDD4A6"/><stop offset="1" stop-color="#E2B377" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <nav>
+    <div class="logo"><b>Material Bunnies</b><span class="mono">FIELD GUIDE</span></div>
+    <ul><li class="on">세계관</li><li>토끼들</li><li>오늘의 예보</li><li>표본 숍</li><li>메이킹</li></ul>
+    <div class="cart mono">CART (0)</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero rel">
+    <div class="kicker mono"><span>FIELD GUIDE No.01</span><i></i><span>물질 토끼 관찰 도감</span></div>
+    <h1>같은 모양으로 태어나,<br>다른 물질로 살아갑니다.</h1>
+    <p class="lead">털, 솜사탕, 오로라, 빵. 몸의 재질이 곧 성격이 되는 토끼들.<br>귀여운 약점을 고치지 않고, 안고서 오늘도 열심히 삽니다.</p>
+
+    <div class="lineup" id="lineup"></div>
+
+    <div class="anno" data-n="1" style="right:0;top:70px">같은 실루엣 4개를 나란히 → 이 브랜드가 무엇인지 첫 화면에서 바로 보임. 3D 렌더 대신 2D 재질 일러스트(전시 판넬과 같은 톤)</div>
+  </div>
+
+  <!-- RULES -->
+  <section class="rel">
+    <div class="sec-head"><h2>이 세계의 세 가지 규칙</h2><span class="mono">WORLD / RULES</span></div>
+    <div class="rules">
+      <div class="rule"><div class="n mono">RULE 01</div><h3>모두 같은 모양으로<br>태어난다</h3><p>작은 눈, 작은 입, 둥근 몸. 얼굴은 모두 같아서, 다른 건 오직 몸의 물질뿐입니다.</p></div>
+      <div class="rule"><div class="n mono">RULE 02</div><h3>몸의 물질이<br>성격을 만든다</h3><p>털이 긴 토끼는 꼼꼼해지고, 물에 녹는 토끼는 조심스러워집니다. 성격은 물성에서 나옵니다.</p></div>
+      <div class="rule"><div class="n mono">RULE 03</div><h3>약점은 고치지 않고,<br>안고 산다</h3><p>눅눅해지고, 녹고, 들키고, 엉킵니다. 그래도 각자의 방식으로 하루를 살아냅니다.</p></div>
+    </div>
+    <div class="anno" data-n="2" style="right:-10px;top:22px">긴 세계관 설명 대신 '규칙 3줄'. 인스타 첫 고정 게시물로도 그대로 사용</div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="rel">
+    <div class="sec-head"><h2>토끼들</h2><span class="mono">SPECIMENS 01—04</span></div>
+    <div class="cards" id="cards"></div>
+    <div class="anno" data-n="3" style="left:-14px;top:150px">도감 카드: 재질 스와치 + 약점 지수. 카드 클릭 → 캐릭터 방(전시 4칸 룸과 1:1)</div>
+  </section>
+
+  <!-- FORECAST -->
+  <section class="rel">
+    <div class="sec-head"><h2>오늘의 토끼 예보</h2><span class="mono">DAILY FORECAST</span></div>
+    <div class="forecast">
+      <div class="fc-left">
+        <div class="mono">TODAY · SEOUL</div>
+        <div class="big">맑음, 건조함</div>
+        <div class="meta">기온 4° · 습도 32% · 바람 약함</div>
+        <div class="note">날씨와 습도에 따라 매일 바뀌는 토끼들의 상태.<br>같은 내용이 인스타 스토리 '관찰 일지'로도 올라갑니다.</div>
+      </div>
+      <div class="fc-rows" id="fc"></div>
+    </div>
+    <div class="anno" data-n="4" style="right:-10px;top:-6px">'다시 들어올 이유'를 만드는 장치. 날씨별 문구만 미리 써 두면 됨 (맑음/비/눈/습함 × 4종)</div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="rel">
+    <div class="shop">
+      <div class="tray" id="tray"></div>
+      <div class="shop-txt">
+        <div class="mono">SPECIMEN SHOP · No.01</div>
+        <h2>손끝으로 만지는<br>물질 표본 마그넷</h2>
+        <p>토끼들의 몸에서 떼어 온 듯한 재질 표본 4종. 냉장고에, 책상 위 철제 보드에 붙여 두고 오늘의 기분에 맞는 물질을 만져 보세요.</p>
+        <div class="spec-table">
+          <div><span>구성</span><span>모나 · 슈슈 · 폴라 · 버티 (낱개 / 4종 세트)</span></div>
+          <div><span>크기</span><span>약 5 × 5 cm (제작 후 확정)</span></div>
+          <div><span>제작</span><span>수작업 · 개체마다 조금씩 다름</span></div>
+          <div><span>상태</span><span>프리오더 준비 중</span></div>
+        </div>
+        <div class="btns"><span class="btn p">프리오더 알림 받기</span><span class="btn">피규어 출시 알림</span></div>
+      </div>
+    </div>
+    <div class="anno" data-n="5" style="left:-14px;top:-6px">마그넷 = '물질 표본'으로 이름 붙이면 세계관 안의 상품이 됨. 실제 판매 시엔 사용 장면 사진이 이 자리에</div>
+  </section>
+
+  <!-- MAKING -->
+  <section class="rel">
+    <div class="sec-head"><h2>손으로 만든 물질</h2><span class="mono">MAKING NOTES</span></div>
+    <div class="making">
+      <div><div class="ph mono">작업 사진 자리</div><div class="ph-cap"><span class="mono">01</span>모나 · 긴 털 원단 한 올씩 붙이기</div></div>
+      <div><div class="ph mono">작업 사진 자리</div><div class="ph-cap"><span class="mono">02</span>슈슈 · 양모 니들펠팅</div></div>
+      <div><div class="ph mono">작업 사진 자리</div><div class="ph-cap"><span class="mono">03</span>폴라 · 간섭 펄 도색</div></div>
+    </div>
+    <div class="anno" data-n="6" style="right:-10px;top:-6px">실제 손작업 사진 = 'AI 아님'의 가장 강한 증거. 메이킹 릴스와 같은 소스</div>
+  </section>
+
+  <footer>
+    <div><b>Material Bunnies</b><br><br>by MTRL Works · 머티리얼웍스</div>
+    <div class="mono" style="text-align:right">INSTAGRAM @materialbunnies<br>사업자 정보 · 이용약관 · 개인정보처리방침</div>
+  </footer>
+</div>
+
+<script>
+// seeded random
+let s=7;const R=()=>{s=(s*16807)%2147483647;return (s-1)/2147483646};
+const NS='http://www.w3.org/2000/svg';
+
+function texture(kind, w, h, seed){
+  s=seed||7; let g='';
+  if(kind==='mona'){
+    g+=`<rect width="${w}" height="${h}" fill="url(#gMona)"/>`;
+    const cols=['#FFFDF8','#F1E7D8','#E2D3BE','#D3C1A8','#FAF4EA'];
+    for(let i=0;i<(w*h)/38;i++){const x=R()*w,y=R()*h,l=14+R()*26,b=(R()-.5)*10;
+      g+=`<path d="M${x} ${y} q${b} ${l/2} ${b*.4} ${l}" stroke="${cols[i%5]}" stroke-width="${1+R()*1.4}" fill="none" stroke-linecap="round" opacity=".9"/>`;}
+  }
+  if(kind==='shushu'){
+    g+=`<rect width="${w}" height="${h}" fill="#FBE4EE"/><g filter="url(#blur8)">`;
+    const cols=['#F6B3CD','#BFE0F3','#D8CBF3','#FFD3E2','#C9ECF5'];
+    for(let i=0;i<(w*h)/1400;i++){g+=`<circle cx="${R()*w}" cy="${R()*h}" r="${14+R()*26}" fill="${cols[i%5]}" opacity=".85"/>`}
+    g+=`</g>`;
+    for(let i=0;i<(w*h)/700;i++){const x=R()*w,y=R()*h;g+=`<path d="M${x} ${y} c${R()*30-15} ${R()*20-10} ${R()*30-15} ${R()*20-10} ${R()*40-20} ${R()*30-15}" stroke="#fff" stroke-width=".8" fill="none" opacity=".75"/>`}
+  }
+  if(kind==='pola'){
+    g+=`<rect width="${w}" height="${h}" fill="#E9E6F2"/><g filter="url(#blur4)"><g filter="url(#wave)">`;
+    const cols=['#9FE3D2','#B8A6EC','#8FD0EE','#E7B6E6','#C3F0C8'];
+    for(let i=-2;i<(h/22)+2;i++){g+=`<rect x="-40" y="${i*22}" width="${w+80}" height="${14+R()*14}" fill="${cols[(i+5)%5]}" opacity=".9" transform="rotate(-18 ${w/2} ${h/2})"/>`}
+    g+=`</g></g>`;
+    for(let i=0;i<(w*h)/900;i++){g+=`<circle cx="${R()*w}" cy="${R()*h}" r="${.6+R()*1.3}" fill="#fff" opacity="${.5+R()*.5}"/>`}
+  }
+  if(kind==='berti'){
+    g+=`<rect width="${w}" height="${h}" fill="url(#gBerti)"/>`;
+    g+=`<ellipse cx="${w/2}" cy="${h*.66}" rx="${w*.36}" ry="${h*.28}" fill="url(#gCrumb)"/>`;
+    for(let i=0;i<(w*h)/260;i++){const x=R()*w,y=R()*h;g+=`<ellipse cx="${x}" cy="${y}" rx="${.8+R()*2}" ry="${.5+R()*1.2}" fill="${R()>.5?'#9C5E28':'#F3DDB4'}" opacity=".55"/>`}
+  }
+  return g;
+}
+
+function bunny(kind, seed){
+  const face = kind==='berti'||kind==='mona' ? '#2A2724' : '#2A2724';
+  return `<svg viewBox="-6 -6 212 270" xmlns="${NS}">
+    <ellipse cx="100" cy="258" rx="70" ry="7" fill="#2A2724" opacity=".12"/>
+    <g clip-path="url(#bclip)">${texture(kind,200,260,seed)}
+      ${kind==='berti'?'<g fill="#8A4F1E" opacity=".45"><ellipse cx="74" cy="16" rx="14" ry="10"/><ellipse cx="126" cy="16" rx="14" ry="10"/></g>':''}
+    </g>
+    <g mask="url(#nobody)" fill="none" stroke="#2A2724" stroke-width="2.2"><use href="#earL"/><use href="#earR"/></g>
+    <use href="#body" fill="none" stroke="#2A2724" stroke-width="2.2"/>
+    <circle cx="84" cy="156" r="3.4" fill="${face}"/><circle cx="116" cy="156" r="3.4" fill="${face}"/>
+    <path d="M94 166 q3 4 6 0 q3 4 6 0" stroke="${face}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+
+const B=[
+  {k:'mona',no:'01',mat:'ANGORA',name:'모나',ko:'앙고라 털',q:'털 관리에 여념 없는 새침떼기',w:[['엉킴',5],['정전기',4],['바람',3]],r:'-1.5deg'},
+  {k:'shushu',no:'02',mat:'COTTON CANDY',name:'슈슈',ko:'솜사탕',q:'물·열에 약해 조심스럽지만, 바다를 꿈꿈',w:[['물',5],['열',5],['바람',4]],r:'1deg'},
+  {k:'pola',no:'03',mat:'AURORA',name:'폴라',ko:'오로라',q:'평범하고 싶은데 너무 눈에 띔',w:[['주목',5],['어둠',4],['카메라',3]],r:'-.5deg'},
+  {k:'berti',no:'04',mat:'BREAD',name:'버티',ko:'빵',q:'집이 좋은데, 바삭하려면 나가야 함',w:[['습기',5],['집콕',4],['칼',2]],r:'1.5deg'},
+];
+
+document.getElementById('lineup').innerHTML=B.map((b,i)=>`
+  <div class="spec">${bunny(b.k,11+i)}
+    <div class="tag mono" style="--r:${b.r}">No.${b.no} / ${b.mat}<b>${b.name}</b>${b.ko} 토끼</div>
+  </div>`).join('')+`<div class="measure"><span class="mono">H ≈ 10cm (실물 시제품 기준)</span></div>`;
+
+document.getElementById('cards').innerHTML=B.map((b,i)=>`
+  <div class="card">
+    <div class="swatch"><svg viewBox="0 0 260 170" preserveAspectRatio="xMidYMid slice">${texture(b.k,260,170,30+i)}</svg></div>
+    <div class="top mono"><span>No.${b.no}</span><span>${b.mat}</span></div>
+    <h3>${b.name}</h3>
+    <div class="quote">${b.q}</div>
+    <div class="meters">${b.w.map(([n,v])=>`<div class="meter"><span>${n}에 약함</span><div class="dots">${[1,2,3,4,5].map(d=>`<i class="${d<=v?'f':''}"></i>`).join('')}</div></div>`).join('')}</div>
+    <div class="more"><span>${b.name}의 방 들어가기</span><span>→</span></div>
+  </div>`).join('');
+
+const F=[['정전기 주의','건조한 날은 털이 사방으로. 오늘 털 빗는 시간 두 배.'],
+         ['외출 가능','비 소식 없음! 단, 난로 근처는 여전히 금지.'],
+         ['숨기 어려움','맑은 밤엔 오로라가 더 선명해져서 들키기 쉬움.'],
+         ['바삭 최고치','습도 32%. 오늘만큼은 산책 안 나가도 바삭함 유지.']];
+document.getElementById('fc').innerHTML=B.map((b,i)=>`
+  <div class="fc">${bunny(b.k,50+i)}<div><b>${b.name}</b><span class="st">${F[i][0]}</span><p>${F[i][1]}</p></div></div>`).join('');
+
+document.getElementById('tray').innerHTML=B.map((b,i)=>`
+  <div class="slot"><svg viewBox="0 0 150 150">${texture(b.k,150,150,70+i)}</svg><span class="mono">SPECIMEN ${b.no} · ${b.mat}</span></div>`).join('');
+</script>
+</body>
+</html>
